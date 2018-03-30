@@ -127,7 +127,6 @@ AC_CANONICAL_HOST
 case "$host" in
 
 *-*-linux*)
-	no_ptmx_check=1
 	;;
 
 *-*-solaris*)
@@ -282,7 +281,6 @@ AC_ARG_ENABLE(openpty,
 if test "x$dropbear_cv_func_have_openpty" = "xyes"; then
 	AC_DEFINE(HAVE_OPENPTY,,Have openpty() function)
 	no_ptc_check=yes
-	no_ptmx_check=yes
 fi
 
 AC_ARG_ENABLE(syslog,
@@ -780,16 +778,7 @@ AC_CHECK_FUNCS([freeaddrinfo getnameinfo fork writev getgrouplist])
 
 AC_SEARCH_LIBS(basename, gen, AC_DEFINE(HAVE_BASENAME))
 
-# Solaris needs ptmx
-if test -z "$no_ptmx_check" ; then
-	if test x"$cross_compiling" = x"no" ; then
-		if test -e /dev/ptmx ; then
-			AC_DEFINE(USE_DEV_PTMX,1,Use /dev/ptmx)
-		fi
-	else
-		AC_MSG_NOTICE([Not checking for /dev/ptmx, we're cross-compiling])
-	fi
-fi
+AC_DEFINE(USE_DEV_PTMX,1,Use /dev/ptmx)
 
 if test -z "$no_ptc_check" ; then
 	if test x"$cross_compiling" = x"no" ; then

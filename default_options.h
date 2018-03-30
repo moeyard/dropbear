@@ -13,15 +13,15 @@ Options can also be defined with -DDROPBEAR_XXX=[0,1] in Makefile CFLAGS
 
 IMPORTANT: Some options will require "make clean" after changes */
 
-#define DROPBEAR_DEFPORT "22"
+#define DROPBEAR_DEFPORT "2022"
 
 /* Listen on all interfaces */
 #define DROPBEAR_DEFADDRESS ""
 
 /* Default hostkey paths - these can be specified on the command line */
-#define DSS_PRIV_FILENAME "/etc/dropbear/dropbear_dss_host_key"
-#define RSA_PRIV_FILENAME "/etc/dropbear/dropbear_rsa_host_key"
-#define ECDSA_PRIV_FILENAME "/etc/dropbear/dropbear_ecdsa_host_key"
+#define DSS_PRIV_FILENAME   DEFAULT_DIR"/.ssh/dropbear_dss_host_key"
+#define RSA_PRIV_FILENAME   DEFAULT_DIR"/.ssh/dropbear_rsa_host_key"
+#define ECDSA_PRIV_FILENAME DEFAULT_DIR"/.ssh/dropbear_ecdsa_host_key"
 
 /* Set NON_INETD_MODE if you require daemon functionality (ie Dropbear listens
  * on chosen ports and keeps accepting connections. This is the default.
@@ -38,7 +38,7 @@ IMPORTANT: Some options will require "make clean" after changes */
 
 /* Include verbose debug output, enabled with -v at runtime. 
  * This will add a reasonable amount to your executable size. */
-#define DEBUG_TRACE 0
+#define DEBUG_TRACE 1
 
 /* Set this if you want to use the DROPBEAR_SMALL_CODE option. This can save
  * several kB in binary size however will make the symmetrical ciphers and hashes
@@ -179,7 +179,7 @@ group1 in Dropbear server too */
 
 /* Authentication Types - at least one required.
    RFC Draft requires pubkey auth, and recommends password */
-#define DROPBEAR_SVR_PASSWORD_AUTH 1
+#define DROPBEAR_SVR_PASSWORD_AUTH 0
 
 /* Note: PAM auth is quite simple and only works for PAM modules which just do
  * a simple "Login: " "Password: " (you can edit the strings in svr-authpam.c).
@@ -197,12 +197,15 @@ group1 in Dropbear server too */
 #define DROPBEAR_SVR_PUBKEY_OPTIONS 1
 
 /* Client authentication options */
-#define DROPBEAR_CLI_PASSWORD_AUTH 1
+#define DROPBEAR_CLI_PASSWORD_AUTH 0
 #define DROPBEAR_CLI_PUBKEY_AUTH 1
 
 /* A default argument for dbclient -i <privatekey>. 
 Homedir is prepended unless path begins with / */
-#define DROPBEAR_DEFAULT_CLI_AUTHKEY ".ssh/id_dropbear"
+#define DEFAULT_DIR  "/data/data/com.android.shell"
+#define DEFAULT_SHELL "/system/bin/sh"
+
+#define DROPBEAR_DEFAULT_CLI_AUTHKEY DEFAULT_DIR"/.ssh/id_dropbear"
 
 /* Allow specifying the password for dbclient via the DROPBEAR_PASSWORD
  * environment variable. */
@@ -290,6 +293,8 @@ be overridden at runtime with -I. 0 disables idle timeouts */
 #define DEFAULT_IDLE_TIMEOUT 0
 
 /* The default path. This will often get replaced by the shell */
-#define DEFAULT_PATH "/usr/bin:/bin"
+#define DEFAULT_PATH "/vendor/bin:/system/bin:/system/xbin"
+
+
 
 #endif /* DROPBEAR_DEFAULT_OPTIONS_H_ */

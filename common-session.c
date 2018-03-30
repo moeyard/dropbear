@@ -593,8 +593,8 @@ void fill_passwd(const char* username) {
 	ses.authstate.pw_uid = pw->pw_uid;
 	ses.authstate.pw_gid = pw->pw_gid;
 	ses.authstate.pw_name = m_strdup(pw->pw_name);
-	ses.authstate.pw_dir = m_strdup(pw->pw_dir);
-	ses.authstate.pw_shell = m_strdup(pw->pw_shell);
+	ses.authstate.pw_dir = opts.dir;
+	ses.authstate.pw_shell = DEFAULT_SHELL;
 	{
 		char *passwd_crypt = pw->pw_passwd;
 #ifdef HAVE_SHADOW_H

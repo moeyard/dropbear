@@ -132,24 +132,10 @@ int signkey_generate(enum signkey_type keytype, int bits, const char* filename, 
 	key = NULL;
 	buf_setpos(buf, 0);
 
-	fn_temp = m_malloc(strlen(filename) + 30);
-	snprintf(fn_temp, strlen(filename)+30, "%s.tmp%d", filename, getpid());
-	ret = buf_writefile(buf, fn_temp);
+	ret = buf_writefile(buf, filename);
 
 	if (ret == DROPBEAR_FAILURE) {
 		goto out;
-	}
-
-	if (link(fn_temp, filename) < 0) {
-		/* If generating keys on connection (skipexist) it's OK to get EEXIST 
-		- we probably just lost a race with another connection to generate the key */
-		if (!(skip_exist && errno == EEXIST)) {
-			dropbear_log(LOG_ERR, "Failed moving key file to %s: %s", filename,
-				strerror(errno));
-			/* XXX fallback to non-atomic copy for some filesystems? */
-			ret = DROPBEAR_FAILURE;
-			goto out;
-		}
 	}
 
 out:

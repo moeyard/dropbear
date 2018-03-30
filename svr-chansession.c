@@ -596,7 +596,6 @@ static int sessionpty(struct ChanSess * chansess) {
 	pw = getpwnam(ses.authstate.pw_name);
 	if (!pw)
 		dropbear_exit("getpwnam failed after succeeding previously");
-	pty_setowner(pw, chansess->tty);
 
 	/* Set up the rows/col counts */
 	sessionwinchange(chansess);
@@ -962,6 +961,8 @@ static void execchild(const void *user_data) {
 	addnewvar("HOME", ses.authstate.pw_dir);
 	addnewvar("SHELL", get_user_shell());
 	addnewvar("PATH", DEFAULT_PATH);
+	addnewvar("DATA", "/data");
+	addnewvar("ROOT", "/system");
 	if (chansess->term != NULL) {
 		addnewvar("TERM", chansess->term);
 	}

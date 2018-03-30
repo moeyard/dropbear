@@ -58,6 +58,7 @@ typedef struct runopts {
 	char *mac_list;
 #endif
 
+	char * dir;
 } runopts;
 
 extern runopts opts;
